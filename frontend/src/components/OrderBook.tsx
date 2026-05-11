@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import type { Order, Trade } from '../types';
 import { TradingService } from '../services/api';
-import { formatCurrency, formatDate } from '../utils/helpers';
+import { API_BASE_URL } from '../config';
+import { formatDate } from '../utils/helpers';
 
 const OrderBook: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -48,7 +49,7 @@ const OrderBook: React.FC = () => {
 
   const fetchOrderStats = async () => {
     try {
-      const response = await fetch('http://localhost:8081/api/trading/orders/stats');
+      const response = await fetch(`${API_BASE_URL}/trading/orders/stats`);
       if (!response.ok) throw new Error('Failed to fetch stats');
       return await response.json();
     } catch (error) {
@@ -389,7 +390,7 @@ const OrderBook: React.FC = () => {
                         </span>
                       </td>
                       <td style={{ padding: '1rem 1rem', fontSize: '0.9rem', color: '#6b7280', fontWeight: '500' }}>
-                        {order.orderMode || 'MARKET'}
+                        {(order as Order & { orderMode?: string }).orderMode || 'MARKET'}
                       </td>
                       <td style={{ padding: '1rem 1rem', textAlign: 'right', fontWeight: '700', color: '#0f172a', fontSize: '0.95rem' }}>
                         ${order.price.toFixed(2)}

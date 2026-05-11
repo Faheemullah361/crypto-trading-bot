@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Coin } from '../types';
 import { CoinService } from '../services/api';
-import { formatCurrency, formatPercent, getPriceChangeColor } from '../utils/helpers';
+import { formatCurrency, formatPercent } from '../utils/helpers';
 
 interface CoinCardProps {
   coin: Coin;

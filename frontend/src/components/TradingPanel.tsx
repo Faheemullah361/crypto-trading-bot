@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import type { Order, Coin, TradingStrategy } from '../types';
-import { TradingService, StrategyService } from '../services/api';
+import type { Coin, TradingStrategy } from '../types';
+import { StrategyService } from '../services/api';
+import { API_BASE_URL } from '../config';
 import { formatCurrency, validateOrderInput } from '../utils/helpers';
 
 interface TradingPanelProps {
@@ -102,13 +103,13 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
   useEffect(() => {
     const fetchActiveBots = async () => {
       try {
-        const response = await fetch('http://localhost:8081/api/demo/bot/active');
+        const response = await fetch(`${API_BASE_URL}/demo/bot/active`);
         const data = await response.json();
         if (data.activeBots && Array.isArray(data.activeBots)) {
           const botStatusList = await Promise.all(
             data.activeBots.map(async (botId: string) => {
               try {
-                const statusRes = await fetch(`http://localhost:8081/api/demo/bot/status/${botId}`);
+                const statusRes = await fetch(`${API_BASE_URL}/demo/bot/status/${botId}`);
                 return await statusRes.json();
               } catch {
                 return null;
@@ -170,8 +171,8 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
 
       // Use advanced endpoint if not a market order
       const endpoint = orderMode === 'MARKET' 
-        ? 'http://localhost:8081/api/trading/orders'
-        : 'http://localhost:8081/api/trading/orders/advanced';
+        ? `${API_BASE_URL}/trading/orders`
+        : `${API_BASE_URL}/trading/orders/advanced`;
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -184,7 +185,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
         throw new Error(errorData.error || 'Failed to place order');
       }
 
-      const result = await response.json();
+      await response.json();
       
       const orderModeText = orderMode === 'MARKET' ? '' : ` (${orderMode})`;
       setSuccess(`${orderType}${orderModeText} order placed successfully!`);
@@ -257,7 +258,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
         }
       }
 
-      const response = await fetch('http://localhost:8081/api/demo/bot/start', {
+      const response = await fetch(`${API_BASE_URL}/demo/bot/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
@@ -282,7 +283,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
 
   const handleStopBot = async (botId: string) => {
     try {
-      const response = await fetch(`http://localhost:8081/api/demo/bot/stop/${botId}`, {
+      const response = await fetch(`${API_BASE_URL}/demo/bot/stop/${botId}`, {
         method: 'POST',
       });
       const data = await response.json();
@@ -298,7 +299,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
 
   const handlePauseBot = async (botId: string) => {
     try {
-      const response = await fetch(`http://localhost:8081/api/demo/bot/pause/${botId}`, {
+      const response = await fetch(`${API_BASE_URL}/demo/bot/pause/${botId}`, {
         method: 'POST',
       });
       const data = await response.json();
@@ -314,7 +315,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
 
   const handleResumeBot = async (botId: string) => {
     try {
-      const response = await fetch(`http://localhost:8081/api/demo/bot/resume/${botId}`, {
+      const response = await fetch(`${API_BASE_URL}/demo/bot/resume/${botId}`, {
         method: 'POST',
       });
       const data = await response.json();
@@ -827,7 +828,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({
                 </select>
                 <button
                   onClick={handleStartBot}
-                  disabled={botLoading || (selectedStrategy && !selectedStrategy.symbol && !strategySymbolOverride)}
+                  disabled={botLoading || Boolean(selectedStrategy && !selectedStrategy.symbol && !strategySymbolOverride)}
                   style={{
                     padding: '0.75rem 1.5rem',
                     background: (botLoading || (selectedStrategy && !selectedStrategy.symbol && !strategySymbolOverride))

@@ -1,4 +1,5 @@
 import type { WebSocketMessage } from '../types';
+import { WS_URL } from '../config';
 
 export class WebSocketService {
   private ws: WebSocket | null = null;
@@ -8,7 +9,7 @@ export class WebSocketService {
   private reconnectDelay = 3000;
   private messageHandlers: Map<string, (data: any) => void> = new Map();
 
-  constructor(url: string = 'ws://localhost:8081/ws') {
+  constructor(url: string = WS_URL) {
     this.url = url;
   }
 

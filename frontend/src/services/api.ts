@@ -1,6 +1,6 @@
 import type { Coin, ChartData, Order, Trade, Portfolio, TradingStrategy } from '../types';
+import { API_BASE_URL } from '../config';
 
-const API_BASE_URL = 'http://localhost:8081/api';
 const REQUEST_TIMEOUT = 8000; // 8 seconds
 
 // Helper function to fetch with timeout

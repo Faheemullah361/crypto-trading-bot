@@ -318,7 +318,7 @@ function App() {
             boxShadow: '0 10px 30px rgba(0,0,0,0.06)'
           }}>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#111827', marginBottom: '0.5rem' }}>
-              {currentView.charAt(0).toUpperCase() + currentView.slice(1)} View
+              {String(currentView).charAt(0).toUpperCase() + String(currentView).slice(1)} View
             </h2>
             <p style={{ color: '#6b7280' }}>This section is under development</p>
           </div>
