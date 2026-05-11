@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   datasource:
@@ -27,3 +27,9 @@ trading:
 websocket:
   enabled: true
   endpoint: /ws/crypto
+
+app:
+  cors:
+    allowed-origins: ${FRONTEND_URL:http://localhost:5173,http://localhost:3000}
+  websocket:
+    allowed-origins: ${FRONTEND_URL:http://localhost:5173,http://localhost:3000}
