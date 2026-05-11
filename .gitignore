@@ -1,0 +1,20 @@
+# Build outputs
+backend/target/
+frontend/dist/
+frontend/.vite/
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Environment files
+.env
+.env.*
+
+# IDE / OS noise
+.vscode/
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
